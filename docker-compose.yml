@@ -1,0 +1,29 @@
+version: '3'
+services:
+  web:
+    hostname: web
+    build: .
+    command: go run main.go
+    tty: true
+    volumes:
+    - .:/go/src/first_docker_project
+    - ../../:/go/src
+    ports:
+    - 8080:8080
+    depends_on:
+    - db
+
+  db:
+    hostname: db
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: first_docker_project
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: root
+      TZ: 'Asia/Tokyo'
+    volumes:
+    - ./my.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+    - 3306:3306
